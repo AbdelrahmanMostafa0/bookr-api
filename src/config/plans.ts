@@ -1,4 +1,3 @@
-// src/config/plans.ts
 export const PLANS = {
   free: {
     maxBranches: 1,
