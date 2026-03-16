@@ -14,6 +14,7 @@ export interface IUser extends Document {
   password?: string;
   phone?: string;
   avatar?: string;
+  bio?: string;
 
   role: Role;
   provider: AuthProvider;
@@ -51,6 +52,7 @@ const UserSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
     },
+    bio: { type: String, default: null },
     password: { type: String, default: null },
     phone: { type: String, default: null },
     avatar: { type: String, default: null },

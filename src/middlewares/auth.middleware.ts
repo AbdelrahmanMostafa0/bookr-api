@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyAccessToken } from "../utils/token";
 import { errorResponse } from "../utils/response";
+import { AuthRequest } from "../types/auth";
 
 export const authMiddleware = (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction,
 ) => {
