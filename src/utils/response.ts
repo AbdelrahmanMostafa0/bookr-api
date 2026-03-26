@@ -22,10 +22,9 @@ export const errorResponse = (
   res.status(statusCode).json({
     success: false,
     message,
-    errors,
+    ...(errors && { errors }),
   });
 };
-
 export const validationErrorResponse = (res: Response, result: any) => {
   const errors = result.error.issues.map((issue: any) => ({
     field: issue.path[0],
@@ -33,3 +32,13 @@ export const validationErrorResponse = (res: Response, result: any) => {
   }));
   return errorResponse(res, "Validation failed", 400, errors);
 };
+
+export class ApiError extends Error {
+  statusCode: number;
+
+  constructor(statusCode: number, message: string) {
+    super(message);
+    this.statusCode = statusCode;
+    this.name = "ApiError";
+  }
+}
