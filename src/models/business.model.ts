@@ -1,6 +1,7 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface IBusiness extends Document {
+  ownerId: String;
   name: string;
   slug: string;
   logo?: string;
@@ -16,14 +17,17 @@ export interface IBusiness extends Document {
     state?: string;
     country?: string;
   };
+  isActive: boolean;
+  isPublished: boolean;
+  onboardingStep: number;
   workingHours?: {
-    monday?: { open: string; close: string };
-    tuesday?: { open: string; close: string };
-    wednesday?: { open: string; close: string };
-    thursday?: { open: string; close: string };
-    friday?: { open: string; close: string };
-    saturday?: { open: string; close: string };
-    sunday?: { open: string; close: string };
+    monday?: { open: string; close: string; isOff: boolean };
+    tuesday?: { open: string; close: string; isOff: boolean };
+    wednesday?: { open: string; close: string; isOff: boolean };
+    thursday?: { open: string; close: string; isOff: boolean };
+    friday?: { open: string; close: string; isOff: boolean };
+    saturday?: { open: string; close: string; isOff: boolean };
+    sunday?: { open: string; close: string; isOff: boolean };
   };
   createdAt: Date;
   updatedAt: Date;
@@ -31,7 +35,8 @@ export interface IBusiness extends Document {
 
 const BusinessSchema = new Schema<IBusiness>(
   {
-    name: { type: String, required: true, trim: true },
+    ownerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    name: { type: String, required: true, trim: true, default: "New Business" },
     slug: {
       type: String,
       required: true,
@@ -47,6 +52,9 @@ const BusinessSchema = new Schema<IBusiness>(
     website: { type: String, default: null },
     phone: { type: String, default: null },
     email: { type: String, default: null },
+    isActive: { type: Boolean, default: false },
+    isPublished: { type: Boolean, default: false },
+    onboardingStep: { type: Number, default: 1 },
     address: {
       street: { type: String, default: null },
       city: { type: String, default: null },
@@ -57,30 +65,37 @@ const BusinessSchema = new Schema<IBusiness>(
       monday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       tuesday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       wednesday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       thursday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       friday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       saturday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
       sunday: {
         open: { type: String, default: null },
         close: { type: String, default: null },
+        isOff: { type: Boolean, default: false },
       },
     },
   },
